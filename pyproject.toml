@@ -22,7 +22,9 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = [
+  "django>=3.2",
+]
 
 [project.urls]
 Documentation = "https://github.com/websideproject/django-paddle-billing#readme"
@@ -39,7 +41,6 @@ packages = ["src/django_paddle_billing"]
 dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
-  "django>=3.2",
 ]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
