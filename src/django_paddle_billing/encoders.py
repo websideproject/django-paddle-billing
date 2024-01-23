@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2023-present Benjamin Gervan <benjamin@websideproject.com>
+#
+# SPDX-License-Identifier: MIT
 from django.core.serializers.json import DjangoJSONEncoder
 
 
