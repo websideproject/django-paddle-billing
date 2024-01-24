@@ -36,6 +36,32 @@ python manage.py migrate
 
 You can now use the package in your Django project.
 
+## Local webhook testing
+
+In order to test webhooks locally, you can user cloudflared tunnel:
+[Cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/get-started/create-local-tunnel/)
+
+### Temporary URL
+
+```bash
+cloudflared tunnel --url http://localhost:8000/
+```
+
+### Permanent URL
+
+Then, you can create a tunnel for your webhook:
+
+```bash
+cloudflared tunnel login
+cloudflared tunnel create sandbox.paddle
+# Create config file
+# ...
+cloudflared tunnel route dns sandbox.paddle sandbox-paddle.example.com
+cloudflared tunnel run sandbox.paddle
+```
+
+Note: The deep level of DNS requires to be paid Advanced DNS (10$/month), so sandbox.paddle.example.com is not free
+
 ## Testing
 
 This package uses pytest for testing. To run the tests, use the following command:
