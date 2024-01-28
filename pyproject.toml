@@ -70,6 +70,7 @@ dependencies = [
   "black>=23.1.0",
   "mypy>=1.0.0",
   "ruff>=0.0.243",
+  "pre-commit>=2.0.0",
 ]
 [tool.hatch.envs.lint.scripts]
 typing = "mypy --install-types --non-interactive {args:src/django_paddle_billing tests}"
@@ -79,7 +80,7 @@ style = [
 ]
 fmt = [
   "black {args:.}",
-  "ruff --fix {args:.}",
+  # "ruff --fix {args:.}",
   "style",
 ]
 all = [

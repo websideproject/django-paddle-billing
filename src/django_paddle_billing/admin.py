@@ -130,7 +130,7 @@ class CustomerAdmin(ModelAdmin):
 @admin.register(Transaction)
 class TransactionAdmin(ModelAdmin):
     formfield_overrides: typing.ClassVar = {
-        models.JSONField: {'widget': app_settings.ADMIN_JSON_EDITOR_WIDGET},
+        models.JSONField: {"widget": app_settings.ADMIN_JSON_EDITOR_WIDGET},
     }
 
     def has_change_permission(self, request, obj=None):

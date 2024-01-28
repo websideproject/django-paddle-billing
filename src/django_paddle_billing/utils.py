@@ -1,6 +1,5 @@
-import json
-
 from django.apps import apps
+
 from django_paddle_billing import settings as app_settings
 
 
