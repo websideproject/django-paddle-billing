@@ -1,0 +1,3 @@
+django-paddle-billing
+paddle-billing-client==0.2.4
+django-ninja==1.1.0

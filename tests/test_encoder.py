@@ -1,5 +1,5 @@
-import pytest
 import json
+
 from django_paddle_billing.encoders import PrettyJSONEncoder
 
 

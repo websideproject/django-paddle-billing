@@ -1,0 +1,2 @@
+class DjangoPaddleBillingError(Exception):
+    pass

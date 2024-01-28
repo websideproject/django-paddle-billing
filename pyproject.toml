@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "django-paddle-billing"
 dynamic = ["version"]
-description = ''
+description = 'Django + Paddle Billing Integration'
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
@@ -23,8 +23,15 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "django>=3.2",
+  "django>=4.2",
+  "paddle_billing_client>=0.2.4",
+  "django_json_widget"
 ]
+
+[project.optional-dependencies]
+unfold = ["unfold"]
+api = ["djangorestframework"]
+all = ["django-paddle-billing[unfold,api]"]
 
 [project.urls]
 Documentation = "https://github.com/websideproject/django-paddle-billing#readme"
@@ -63,6 +70,7 @@ dependencies = [
   "black>=23.1.0",
   "mypy>=1.0.0",
   "ruff>=0.0.243",
+  "pre-commit>=2.0.0",
 ]
 [tool.hatch.envs.lint.scripts]
 typing = "mypy --install-types --non-interactive {args:src/django_paddle_billing tests}"
@@ -72,7 +80,7 @@ style = [
 ]
 fmt = [
   "black {args:.}",
-  "ruff --fix {args:.}",
+  # "ruff --fix {args:.}",
   "style",
 ]
 all = [
