@@ -24,7 +24,7 @@ future==0.18.3
     # via django-json-widget
 idna==3.6
     # via requests
-paddle-billing-client==0.2.4
+paddle-billing-client==0.2.6
     # via django-paddle-billing (pyproject.toml)
 pydantic==2.5.3
     # via api-client-pydantic
