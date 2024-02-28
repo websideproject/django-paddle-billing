@@ -20,7 +20,7 @@ django==5.0.2
     # via django-paddle-billing (pyproject.toml)
 django-json-widget==1.1.1
     # via django-paddle-billing (pyproject.toml)
-future==0.18.3
+future==1.0.0
     # via django-json-widget
 idna==3.6
     # via requests
