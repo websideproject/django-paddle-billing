@@ -18,7 +18,7 @@ charset-normalizer==3.3.2
     # via requests
 django==5.0.3
     # via django-paddle-billing (pyproject.toml)
-django-json-widget==1.1.1
+django-json-widget==2.0.0
     # via django-paddle-billing (pyproject.toml)
 future==1.0.0
     # via django-json-widget
