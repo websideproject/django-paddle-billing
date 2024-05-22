@@ -434,9 +434,10 @@ class Subscription(PaddleBaseModel):
         max_length=10,
         choices=[
             ("active", "Active"),
-            ("trialing", "Trialing"),
+            ("canceled", "Canceled"),
+            ("past_due", "Past Due"),
             ("paused", "Paused"),
-            ("deleted", "Deleted"),
+            ("trialing", "Trialing"),
         ],
     )
     products = models.ManyToManyField(Product, related_name="subscriptions")
