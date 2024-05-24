@@ -77,13 +77,13 @@ class PaddleWebhookView(View):
         """
         payload = request.body.decode("utf-8")
         paddle_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-        if app_settings["PADDLE_SANDBOX"] and paddle_ip not in app_settings["PADDLE_SANDBOX_IPS"]:
+        if app_settings.PADDLE_SANDBOX and paddle_ip not in app_settings.PADDLE_SANDBOX_IPS:
             return HttpResponseBadRequest("IP not allowed")
-        elif not app_settings["PADDLE_SANDBOX"] and paddle_ip not in app_settings["PADDLE_IPS"]:
+        elif not app_settings.PADDLE_SANDBOX and paddle_ip not in app_settings.PADDLE_IPS:
             return HttpResponseBadRequest("IP not allowed")
 
         is_valid = validate_webhook_signature(
-            request.META.get("HTTP_PADDLE_SIGNATURE", ""), request.body, app_settings["PADDLE_SECRET_KEY"]
+            request.META.get("HTTP_PADDLE_SIGNATURE", ""), request.body, app_settings.PADDLE_SECRET_KEY
         )
 
         if not is_valid:

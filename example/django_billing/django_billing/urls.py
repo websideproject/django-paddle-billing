@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django_paddle_billing.urls import urlpatterns as paddle_billing_urls
 from billing.urls import urlpatterns as billing_urls
 from django.contrib import admin
 from django.urls import path
@@ -25,3 +26,5 @@ urlpatterns = [
     path("api/", api.urls),
 ]
 urlpatterns += billing_urls
+urlpatterns += paddle_billing_urls
+
