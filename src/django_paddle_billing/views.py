@@ -8,7 +8,7 @@ from django.views.generic import View
 from paddle_billing_client.helpers import validate_webhook_signature
 from paddle_billing_client.models.notification import NotificationPayload
 
-from django_paddle_billing import settings as app_settings
+from django_paddle_billing.settings import settings as app_settings
 from django_paddle_billing import signals
 
 
