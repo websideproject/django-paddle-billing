@@ -66,6 +66,7 @@ class PaddleWebhookView(View):
         "transaction.paid": signals.transaction_paid,
         "transaction.past_due": signals.transaction_past_due,
         "transaction.payment_failed": signals.transaction_payment_failed,
+        "transaction.ready": signals.transaction_ready,
         "transaction.updated": signals.transaction_updated,
     }
 
