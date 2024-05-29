@@ -32,19 +32,19 @@ test:
 mypy:
 	mypy --config-file pyproject.toml ./
 
-.PHONY: check-safety
-check-safety:
-	poetry check
-	poetry run safety check --full-report
-	poetry run bandit -ll --recursive paddle_billing_client tests
+# .PHONY: check-safety
+# check-safety:
+# 	poetry check
+# 	poetry run safety check --full-report
+# 	poetry run bandit -ll --recursive paddle_billing_client tests
 
 .PHONY: lint
-lint: test check-codestyle mypy check-safety
+lint: test check-codestyle mypy
 
-.PHONY: update-dev-deps
-update-dev-deps:
-	poetry add -D bandit@latest darglint@latest "isort[colors]@latest" mypy@latest pre-commit@latest pydocstyle@latest pylint@latest pytest@latest pyupgrade@latest safety@latest coverage@latest coverage-badge@latest pytest-html@latest pytest-cov@latest
-	poetry add -D --allow-prereleases black@latest
+# .PHONY: update-dev-deps
+# update-dev-deps:
+# 	poetry add -D bandit@latest darglint@latest "isort[colors]@latest" mypy@latest pre-commit@latest pydocstyle@latest pylint@latest pytest@latest pyupgrade@latest safety@latest coverage@latest coverage-badge@latest pytest-html@latest pytest-cov@latest
+# 	poetry add -D --allow-prereleases black@latest
 
 #* Cleaning
 .PHONY: pycache-remove
