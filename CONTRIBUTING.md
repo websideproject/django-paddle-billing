@@ -2,17 +2,23 @@
 
 ## Dependencies
 
-We use `poetry` to manage the [dependencies](https://github.com/python-poetry/poetry).
-If you dont have `poetry`, you should install with `make poetry-download`.
+We use `hatch` to manage the dependencies.
+If you dont have `hatch`, you should install with `pip install hatch`.
 
-To install dependencies and prepare [`pre-commit`](https://pre-commit.com/) hooks you would need to run `install` command:
+## Environment
+
+To create a virtual environment, check out [`hatch`](https://hatch.pypa.io/latest/environment/) documentation.
+Alternatively, you can use `make` commands in your activated environment:
 
 ```bash
 make install
-make pre-commit-install
 ```
 
-To activate your `virtualenv` run `poetry shell`.
+To prepare [`pre-commit`](https://pre-commit.com/) hooks you would need to run `pre-commit-install` command:
+
+```bash
+make pre-commit-install
+```
 
 ## Codestyle
 
