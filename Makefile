@@ -12,7 +12,7 @@ install:
 
 .PHONY: pre-commit-install
 pre-commit-install:
-    pip install pre-commit
+	pip install pre-commit
 	pre-commit install
 
 #* Formatters

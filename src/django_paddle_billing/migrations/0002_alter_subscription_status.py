@@ -13,6 +13,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='subscription',
             name='status',
-            field=models.CharField(choices=[('active', 'Active'), ('canceled', 'Canceled'), ('past_due', 'Past Due'), ('paused', 'Paused'), ('trialing', 'Trialing')], max_length=10),
+            field=models.CharField(
+                choices=[
+                    ('active', 'Active'),
+                    ('canceled', 'Canceled'),
+                    ('past_due', 'Past Due'),
+                    ('paused', 'Paused'),
+                    ('trialing', 'Trialing'),
+                ],
+                max_length=10,
+            ),
         ),
     ]
