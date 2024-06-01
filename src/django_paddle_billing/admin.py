@@ -153,6 +153,12 @@ class PriceAdmin(ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(ModelAdmin):
+    list_display = [
+        'customer_email',
+        'name',
+        'price',
+        'status',
+    ]
     inlines = (
         TransactionInline,
         ProductInline,
@@ -165,6 +171,29 @@ class SubscriptionAdmin(ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return not app_settings.ADMIN_READONLY
+
+    def customer_email(self, obj=None):
+        if obj and obj.customer:
+            return obj.customer.email
+        return ""
+    
+    def name(self, obj=None):
+        if obj and obj.data:
+            try:
+                return ", ".join([item["price"]["name"] for item in obj.data["items"]])
+            except Exception:
+                return ""
+        return ""
+    
+    def price(self, obj=None):
+        if obj and obj.data:
+            try:
+                unit_price = [int(item["price"]["unit_price"]["amount"]) / 100 for item in obj.data["items"]]
+                frequency = [item["price"]["billing_cycle"] for item in obj.data["items"]]
+                return ", ".join([f"{unit_price[i]}/{frequency[i]['frequency']} {frequency[i]['interval']}" for i in range(len(unit_price))])
+            except Exception:
+                return ""
+        return ""
 
 
 @admin.register(Customer)
