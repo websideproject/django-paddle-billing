@@ -10,6 +10,7 @@ from paddle_billing_client.models import (
     address,
     business,
     customer,
+    discount,
     price,
     product,
     subscription,
@@ -195,6 +196,64 @@ class Price(PaddleBaseModel):
                 else:
                     updated += 1
             logger.info("Price sync progress --- synced: %s, created: %s, errors: %s", updated, created, error)
+        return created, updated
+
+
+class Discount(PaddleBaseModel):
+    id = models.CharField(max_length=50, primary_key=True)
+    data = models.JSONField(null=True, blank=True, encoder=PrettyJSONEncoder)
+    custom_data = models.JSONField(null=True, blank=True, encoder=PrettyJSONEncoder)
+
+    class Meta:
+        pass
+
+    def __str__(self) -> str:
+        return str(self.pk)
+
+    def get_data(self) -> discount.Discount | None:
+        if self.data is None:
+            return None
+        return discount.Discount.model_validate(self.data)
+
+    @classmethod
+    def api_list_discounts(cls) -> discount.DiscountsResponse:
+        return paddle_client.list_discounts()
+
+    @classmethod
+    def api_list_discounts_generator(cls, **kwargs) -> Iterator[discount.DiscountsResponse]:
+        yield from paginate(paddle_client.list_discounts, query_params=discount.DiscountQueryParams(**kwargs))
+
+    @classmethod
+    def from_paddle_data(cls, data, occurred_at=None) -> tuple["Discount | None", bool, Exception | None]:
+        try:
+            _discount, created = cls.update_or_create(
+                query={"pk": data.id},
+                defaults={
+                    "data": data.dict(),
+                    "custom_data": data.custom_data,
+                },
+                occurred_at=occurred_at,
+            )
+            return _discount, created, None
+        except Exception as e:
+            return None, False, e
+
+    @classmethod
+    def sync_from_paddle(cls) -> tuple[int, int]:
+        logger.info("Sync Discounts from Paddle")
+        created = 0
+        updated = 0
+        error = 0
+        for discounts in cls.api_list_discounts_generator():
+            for discount_data in discounts.data:
+                _discount, _created, _error = cls.from_paddle_data(discount_data)
+                if _error:
+                    error += 1
+                elif _created:
+                    created += 1
+                else:
+                    updated += 1
+            logger.info("Discount sync progress --- synced: %s, created: %s, errors: %s", updated, created, error)
         return created, updated
 
 
@@ -490,7 +549,6 @@ class Subscription(PaddleBaseModel):
         if account_id is not None:
             if not get_account_model().objects.filter(pk=int(account_id)).exists():
                 error = f"Subscription: Account with id: {account_id} does not exist"
-                # raise Exception('Subscription: Account with id: {} does not exist'.format(data.custom_data['account_id']))
                 return None, False, error
 
         try:
@@ -631,6 +689,12 @@ def address_event_handler(sender, payload, *args, **kwargs) -> None:
         raise DjangoPaddleBillingError(error)
 
 
+@receiver(signals.adjustment_created)
+@receiver(signals.adjustment_updated)
+def adjustment_event_handler(sender, payload, *args, **kwargs) -> None:
+    pass
+
+
 @receiver(signals.business_created)
 @receiver(signals.business_imported)
 @receiver(signals.business_updated)
@@ -657,6 +721,25 @@ def customer_event_handler(sender, payload, *args, **kwargs) -> None:
         raise DjangoPaddleBillingError(error)
 
 
+@receiver(signals.discount_created)
+@receiver(signals.discount_imported)
+@receiver(signals.discount_updated)
+def discount_event_handler(sender, payload, *args, **kwargs) -> None:
+    if not isinstance(payload, discount.Discount):
+        payload = discount.Discount.model_validate(payload)
+    occurred_at = kwargs.get("occurred_at")
+
+    _, _, error = Discount.from_paddle_data(payload, occurred_at)
+    if error:
+        raise DjangoPaddleBillingError(error)
+
+
+@receiver(signals.payout_created)
+@receiver(signals.payout_paid)
+def payout_event_handler(sender, payload, *args, **kwargs) -> None:
+    pass
+
+
 @receiver(signals.price_created)
 @receiver(signals.price_imported)
 @receiver(signals.price_updated)
@@ -681,6 +764,12 @@ def product_event_handler(sender, payload, *args, **kwargs) -> None:
     _, _, error = Product.from_paddle_data(payload, occurred_at)
     if error:
         raise DjangoPaddleBillingError(error)
+
+
+@receiver(signals.report_created)
+@receiver(signals.report_updated)
+def report_event_handler(sender, payload, *args, **kwargs) -> None:
+    pass
 
 
 @receiver(signals.subscription_activated)

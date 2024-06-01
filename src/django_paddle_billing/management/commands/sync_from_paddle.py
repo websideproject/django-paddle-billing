@@ -32,6 +32,12 @@ class Command(BaseCommand):
             Price.sync_from_paddle()
 
             # ----------------
+            # Discounts
+            from django_paddle_billing.models import Discount
+
+            Discount.sync_from_paddle()
+
+            # ----------------
             # Customers
             from django_paddle_billing.models import Customer
 

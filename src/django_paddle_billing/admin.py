@@ -5,7 +5,16 @@ from django.contrib import admin
 from django.db import models
 
 from django_paddle_billing import settings as app_settings
-from django_paddle_billing.models import Address, Business, Customer, Price, Product, Subscription, Transaction
+from django_paddle_billing.models import (
+    Address,
+    Business,
+    Customer,
+    Discount,
+    Price,
+    Product,
+    Subscription,
+    Transaction,
+)
 
 # Check if unfold is in installed apps
 if "unfold" in settings.INSTALLED_APPS:
@@ -181,6 +190,62 @@ class PriceAdmin(ModelAdmin):
     def unit_price(self, obj=None):
         if obj and obj.data and obj.data.get("unit_price"):
             return f'{int(obj.data["unit_price"]["amount"]) / 100} {obj.data["unit_price"]["currency_code"]}'
+        return ""
+
+
+@admin.register(Discount)
+class DiscountAdmin(ModelAdmin):
+    list_display = [
+        "discount_description",
+        "amount",
+        "applies_to",
+        "status",
+        "discount_code",
+        "uses_left",
+        "expires",
+    ]
+    formfield_overrides: typing.ClassVar = {
+        models.JSONField: {"widget": app_settings.ADMIN_JSON_EDITOR_WIDGET},
+    }
+
+    def has_change_permission(self, request, obj=None):
+        return not app_settings.ADMIN_READONLY
+
+    def discount_description(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("description", obj.id)
+        if obj:
+            return obj.id
+        return ""
+
+    def amount(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("amount", "")
+        return ""
+
+    def applies_to(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("restrict_to", "")
+        return ""
+
+    def status(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("status", "")
+        return ""
+
+    def discount_code(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("code", "")
+        return ""
+
+    def uses_left(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("usage_limit", "")
+        return ""
+
+    def expires(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("expires_at", "")
         return ""
 
 
