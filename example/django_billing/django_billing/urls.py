@@ -15,10 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django_paddle_billing.urls import urlpatterns as paddle_billing_urls
 from billing.urls import urlpatterns as billing_urls
 from django.contrib import admin
 from django.urls import path
+
+from django_paddle_billing.urls import urlpatterns as paddle_billing_urls
 
 from .api import api
 

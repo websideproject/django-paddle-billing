@@ -1,5 +1,6 @@
 import logging
 from typing import Iterator, TypeVar
+
 from apiclient import HeaderAuthentication
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -483,17 +484,17 @@ class Subscription(PaddleBaseModel):
         account_id = None
         try:
             account_id = data.custom_data["account_id"]
-        except Exception:
+        except KeyError:
             pass
 
         if account_id is not None:
             if not get_account_model().objects.filter(pk=int(account_id)).exists():
-                error = "Subscription: Account with id: {} does not exist".format(account_id)
+                error = f"Subscription: Account with id: {account_id} does not exist"
                 # raise Exception('Subscription: Account with id: {} does not exist'.format(data.custom_data['account_id']))
                 return None, False, error
 
         try:
-            defaults={
+            defaults = {
                 "customer_id": data.customer_id,
                 "address_id": data.address_id,
                 "business_id": data.business_id,
