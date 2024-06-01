@@ -157,6 +157,7 @@ class SubscriptionAdmin(ModelAdmin):
         'customer_email',
         'name',
         'price',
+        'next_payment',
         'status',
     ]
     inlines = (
@@ -191,6 +192,14 @@ class SubscriptionAdmin(ModelAdmin):
                 unit_price = [int(item["price"]["unit_price"]["amount"]) / 100 for item in obj.data["items"]]
                 frequency = [item["price"]["billing_cycle"] for item in obj.data["items"]]
                 return ", ".join([f"{unit_price[i]}/{frequency[i]['frequency']} {frequency[i]['interval']}" for i in range(len(unit_price))])
+            except Exception:
+                return ""
+        return ""
+
+    def next_payment(self, obj=None):
+        if obj and obj.data:
+            try:
+                return obj.data["next_billed_at"]
             except Exception:
                 return ""
         return ""
