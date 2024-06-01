@@ -346,6 +346,8 @@ class Address(PaddleBaseModel):
             }
             if customer_id is not None:
                 defaults["customer_id"] = customer_id
+            elif data.customer_id is not None:
+                defaults["customer_id"] = data.customer_id
             _address, created = cls.update_or_create(
                 query={"pk": data.id},
                 defaults=defaults,
@@ -491,17 +493,19 @@ class Subscription(PaddleBaseModel):
                 return None, False, error
 
         try:
+            defaults={
+                "customer_id": data.customer_id,
+                "address_id": data.address_id,
+                "business_id": data.business_id,
+                "status": data.status,
+                "data": data.dict(),
+                "custom_data": data.custom_data,
+            }
+            if account_id is not None:
+                defaults["account_id"] = account_id
             _subscription, created = cls.update_or_create(
                 query={"pk": data.id},
-                defaults={
-                    "account_id": account_id,
-                    "customer_id": data.customer_id,
-                    "address_id": data.address_id,
-                    "business_id": data.business_id,
-                    "status": data.status,
-                    "data": data.dict(),
-                    "custom_data": data.custom_data,
-                },
+                defaults=defaults,
                 occurred_at=occurred_at,
             )
             product_ids = [item.price.product_id for item in data.items]
