@@ -53,7 +53,7 @@ class TransactionInline(TabularInline):
 
 @admin.register(Address)
 class AddressAdmin(ModelAdmin):
-    list_display = ["id", "customer_email", "country_code", "postal_code", "status"]
+    list_display = ["customer_email", "country_code", "postal_code", "status"]
     inlines = (SubscriptionInline,)
     formfield_overrides: typing.ClassVar = {
         models.JSONField: {"widget": app_settings.ADMIN_JSON_EDITOR_WIDGET},
@@ -65,6 +65,8 @@ class AddressAdmin(ModelAdmin):
     def customer_email(self, obj=None):
         if obj and obj.customer:
             return obj.customer.email
+        if obj:
+            return obj.id
         return ""
 
     def postal_code(self, obj=None):
@@ -80,6 +82,12 @@ class AddressAdmin(ModelAdmin):
 
 @admin.register(Business)
 class BusinessAdmin(ModelAdmin):
+    list_display = [
+        "name",
+        "company_number",
+        "tax_identifier",
+        "status",
+    ]
     inlines = (SubscriptionInline,)
     formfield_overrides: typing.ClassVar = {
         models.JSONField: {"widget": app_settings.ADMIN_JSON_EDITOR_WIDGET},
@@ -87,6 +95,28 @@ class BusinessAdmin(ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return not app_settings.ADMIN_READONLY
+    
+    def name(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("name", obj.id)
+        if obj:
+            return obj.id
+        return ""
+    
+    def company_number(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("company_number", "")
+        return ""
+    
+    def tax_identifier(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("tax_identifier", "")
+        return ""
+    
+    def status(self, obj=None):
+        if obj and obj.data:
+            return obj.data.get("status", "")
+        return ""
 
 
 @admin.register(Product)
@@ -134,7 +164,10 @@ class PriceAdmin(ModelAdmin):
 
     def name(self, obj=None):
         if obj and obj.data:
-            return obj.data.get("name", "")
+            return obj.data.get("name", obj.id)
+        if obj:
+            return obj.id
+        return ""
 
     def status(self, obj=None):
         if obj and obj.data:
@@ -176,6 +209,8 @@ class SubscriptionAdmin(ModelAdmin):
     def customer_email(self, obj=None):
         if obj and obj.customer:
             return obj.customer.email
+        if obj:
+            return obj.id
         return ""
     
     def name(self, obj=None):
@@ -244,6 +279,8 @@ class TransactionAdmin(ModelAdmin):
     def customer_email(self, obj=None):
         if obj and obj.customer:
             return obj.customer.email
+        if obj:
+            return obj.id
         return ""
 
     def payment_amount(self, obj=None):
