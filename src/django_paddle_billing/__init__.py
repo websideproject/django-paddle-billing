@@ -9,7 +9,8 @@ class AppSettings:
         if name in default_settings:
             return default_settings[name]
 
-        raise AttributeError("'PADDLE_BILLING' settings object has no attribute '%s'" % name)
+        msg = f"'PADDLE_BILLING' settings object has no attribute '{name}'"
+        raise AttributeError(msg)
 
 
 settings = AppSettings()

@@ -142,6 +142,5 @@ PADDLE_BILLING = {
         "100.20.172.113",
     ],
     "PADDLE_SANDBOX": True,
-    "PADDLE_ACCOUNT_MODEL": "billing.Account",
     "ADMIN_READONLY": True,
 }
