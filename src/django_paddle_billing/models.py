@@ -19,6 +19,7 @@ from paddle_billing_client.pagination import paginate
 from django_paddle_billing import settings, signals
 from django_paddle_billing.encoders import PrettyJSONEncoder
 from django_paddle_billing.exceptions import DjangoPaddleBillingError
+from django_paddle_billing.utils import get_account_model
 
 logger = logging.getLogger(__name__)
 
@@ -425,6 +426,12 @@ class Subscription(PaddleBaseModel):
     id = models.CharField(max_length=50, primary_key=True)
     data = models.JSONField(null=True, blank=True, encoder=PrettyJSONEncoder)
     custom_data = models.JSONField(null=True, blank=True, encoder=PrettyJSONEncoder)
+    account = models.ForeignKey(
+        to=get_account_model(),
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="subscriptions",
+    )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="subscriptions")
     address = models.ForeignKey(
         "Address", on_delete=models.CASCADE, null=True, blank=True, related_name="subscriptions"
@@ -470,11 +477,24 @@ class Subscription(PaddleBaseModel):
         return paddle_client.get_subscription(subscription_id)
 
     @classmethod
-    def from_paddle_data(cls, data, occurred_at=None) -> tuple["Subscription | None", bool, Exception | None]:
+    def from_paddle_data(cls, data, occurred_at=None) -> tuple["Subscription | None", bool, Exception | str | None]:
+        account_id = None
+        try:
+            account_id = data.custom_data["account_id"]
+        except Exception:
+            pass
+
+        if account_id is not None:
+            if not get_account_model().objects.filter(pk=int(account_id)).exists():
+                error = "Subscription: Account with id: {} does not exist".format(account_id)
+                # raise Exception('Subscription: Account with id: {} does not exist'.format(data.custom_data['account_id']))
+                return None, False, error
+
         try:
             _subscription, created = cls.update_or_create(
                 query={"pk": data.id},
                 defaults={
+                    "account_id": account_id,
                     "customer_id": data.customer_id,
                     "address_id": data.address_id,
                     "business_id": data.business_id,
