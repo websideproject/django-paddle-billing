@@ -220,7 +220,9 @@ class DiscountAdmin(ModelAdmin):
 
     def amount(self, obj=None):
         if obj and obj.data:
-            return obj.data.get("amount", "")
+            if obj.data.get("type") == "percentage":
+                return f"{obj.data.get('amount', '')}%"
+            return f'{obj.data.get("amount", "")} {obj.data.get("currency_code", "")}'
         return ""
 
     def applies_to(self, obj=None):
