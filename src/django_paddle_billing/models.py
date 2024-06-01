@@ -543,7 +543,7 @@ class Subscription(PaddleBaseModel):
         account_id = None
         try:
             account_id = data.custom_data["account_id"]
-        except KeyError:
+        except (KeyError, TypeError):
             pass
 
         if account_id is not None:
