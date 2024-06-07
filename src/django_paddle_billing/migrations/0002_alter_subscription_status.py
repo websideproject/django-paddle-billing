@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_paddle_billing', '0001_initial'),
+        ("django_paddle_billing", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='subscription',
-            name='status',
-            field=models.CharField(choices=[('active', 'Active'), ('canceled', 'Canceled'), ('past_due', 'Past Due'), ('paused', 'Paused'), ('trialing', 'Trialing')], max_length=10),
+            model_name="subscription",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("active", "Active"),
+                    ("canceled", "Canceled"),
+                    ("past_due", "Past Due"),
+                    ("paused", "Paused"),
+                    ("trialing", "Trialing"),
+                ],
+                max_length=10,
+            ),
         ),
     ]
