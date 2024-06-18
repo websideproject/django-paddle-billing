@@ -34,7 +34,7 @@ requests==2.32.3
     # via api-client
 sqlparse==0.5.0
     # via django
-tenacity==8.3.0
+tenacity==8.4.1
     # via api-client
 typing-extensions==4.12.1
     # via
