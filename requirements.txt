@@ -26,7 +26,7 @@ idna==3.7
     # via requests
 paddle-billing-client==0.2.9
     # via django-paddle-billing (pyproject.toml)
-pydantic==2.7.3
+pydantic==2.8.0
     # via api-client-pydantic
 pydantic-core==2.18.4
     # via pydantic
