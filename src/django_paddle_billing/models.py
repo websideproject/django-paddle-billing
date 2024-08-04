@@ -547,7 +547,7 @@ class Subscription(PaddleBaseModel):
             pass
 
         if account_id is not None:
-            if not get_account_model().objects.filter(pk=int(account_id)).exists():
+            if not get_account_model().objects.filter(pk=account_id).exists():
                 error = f"Subscription: Account with id: {account_id} does not exist"
                 return None, False, error
 
