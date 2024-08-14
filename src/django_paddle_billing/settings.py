@@ -6,6 +6,7 @@ CONFIG_DEFAULTS = {
     "PADDLE_CLIENT_TOKEN": "",
     "PADDLE_SECRET_KEY": "",
     "PADDLE_API_URL": "https://sandbox-api.paddle.com",
+    "PADDLE_IP_REQUEST_HEADER": "HTTP_X_FORWARDED_FOR",
     "PADDLE_IPS": ["34.232.58.13", "34.195.105.136", "34.237.3.244", "35.155.119.135", "52.11.166.252", "34.212.5.7"],
     "PADDLE_SANDBOX_IPS": [
         "34.194.127.46",

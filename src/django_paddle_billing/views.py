@@ -77,7 +77,7 @@ class PaddleWebhookView(View):
         - sending a django signal for each of the SUPPORTED_WEBHOOKS
         """
         payload = request.body.decode("utf-8")
-        paddle_ip = request.META.get("HTTP_X_FORWARDED_FOR", "").split(", ")[0]
+        paddle_ip = request.META.get(app_settings.PADDLE_IP_REQUEST_HEADER, "").split(", ")[0]
         if app_settings.PADDLE_SANDBOX and paddle_ip not in app_settings.PADDLE_SANDBOX_IPS:
             return HttpResponseBadRequest("IP not allowed")
         elif not app_settings.PADDLE_SANDBOX and paddle_ip not in app_settings.PADDLE_IPS:
