@@ -24,7 +24,7 @@ classifiers = [
 ]
 dependencies = [
   "django>=4.2",
-  "paddle_billing_client>=0.2.4",
+  "paddle_billing_client>=0.2.13",
   "django_json_widget"
 ]
 
