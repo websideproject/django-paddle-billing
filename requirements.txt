@@ -12,7 +12,7 @@ api-client-pydantic==3.0.0
     # via paddle-billing-client
 asgiref==3.8.1
     # via django
-certifi==2024.6.2
+certifi==2024.8.30
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -32,7 +32,7 @@ pydantic-core==2.18.4
     # via pydantic
 requests==2.32.3
     # via api-client
-sqlparse==0.5.0
+sqlparse==0.5.1
     # via django
 tenacity==8.3.0
     # via api-client
@@ -40,5 +40,5 @@ typing-extensions==4.12.1
     # via
     #   pydantic
     #   pydantic-core
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
