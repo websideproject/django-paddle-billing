@@ -22,7 +22,7 @@ django-json-widget==2.0.1
     # via django-paddle-billing (pyproject.toml)
 future==1.0.0
     # via django-json-widget
-idna==3.7
+idna==3.10
     # via requests
 paddle-billing-client==0.2.12
     # via django-paddle-billing (pyproject.toml)
