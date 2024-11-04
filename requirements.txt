@@ -14,7 +14,7 @@ asgiref==3.8.1
     # via django
 certifi==2024.8.30
     # via requests
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via requests
 django==5.1.1
     # via django-paddle-billing (pyproject.toml)
