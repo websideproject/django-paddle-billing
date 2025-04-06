@@ -84,7 +84,7 @@ class PaddleWebhookView(View):
             return HttpResponseBadRequest("IP not allowed")
 
         is_valid = validate_webhook_signature(
-            request.META.get("HTTP_PADDLE_SIGNATURE", ""), request.body, app_settings.PADDLE_SECRET_KEY
+            request.META.get("PADDLE-SIGNATURE", ""), request.body, app_settings.PADDLE_SECRET_KEY
         )
 
         if not is_valid:
