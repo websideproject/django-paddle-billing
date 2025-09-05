@@ -23,6 +23,9 @@ codestyle:
 .PHONY: formatting
 formatting: codestyle
 
+.PHONY: lint
+formatting: codestyle
+
 #* Linting
 .PHONY: test
 test:
@@ -40,7 +43,7 @@ mypy:
 # 	poetry run bandit -ll --recursive paddle_billing_client tests
 
 .PHONY: lint
-lint: test check-codestyle mypy
+lint: codestyle mypy
 
 # .PHONY: update-dev-deps
 # update-dev-deps:

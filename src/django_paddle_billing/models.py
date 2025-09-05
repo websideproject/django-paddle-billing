@@ -2,6 +2,7 @@ import logging
 from typing import Iterator, TypeVar
 
 from apiclient import HeaderAuthentication
+from django.conf import settings as django_settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.dispatch import receiver
@@ -562,6 +563,26 @@ class Subscription(PaddleBaseModel):
             }
             if account_id is not None:
                 defaults["account_id"] = account_id
+
+            if settings.PADDLE_ACCOUNT_LINK_BY_CUSTOMER and settings.PADDLE_ACCOUNT_MODEL == django_settings.AUTH_USER_MODEL:
+                # The Account is the User model, link by email is safe
+                if "email" in data.custom_data:
+                    email = data.custom_data["email"]
+                    _user = UserModel.objects.filter(email=email).first()
+                    if _user is not None:
+                        defaults["account_id"] = _user.id
+                    else:
+                        logger.warning(
+                            "Cannot link account for subscription %s, user not found for email %s", data.id, email
+                        )
+                else:
+                    # Link by customer.email via customer_id
+                    _customer = Customer.objects.get(pk=data.customer_id)
+                    if _customer.user is not None:
+                        defaults["account_id"] = _customer.user_id
+                    else:
+                        logger.warning("Cannot link account for subscription %s, customer has no user", data.id)
+
             _subscription, created = cls.update_or_create(
                 query={"pk": data.id},
                 defaults=defaults,
