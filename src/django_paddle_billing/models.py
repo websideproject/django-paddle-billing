@@ -566,7 +566,7 @@ class Subscription(PaddleBaseModel):
 
             if settings.PADDLE_ACCOUNT_LINK_BY_CUSTOMER and settings.PADDLE_ACCOUNT_MODEL == django_settings.AUTH_USER_MODEL:
                 # The Account is the User model, link by email is safe
-                if "email" in data.custom_data:
+                if data.custom_data and "email" in data.custom_data:
                     email = data.custom_data["email"]
                     _user = UserModel.objects.filter(email=email).first()
                     if _user is not None:
