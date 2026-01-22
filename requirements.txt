@@ -36,7 +36,7 @@ sqlparse==0.5.1
     # via django
 tenacity==8.3.0
     # via api-client
-typing-extensions==4.12.1
+typing-extensions==4.12.2
     # via
     #   pydantic
     #   pydantic-core
